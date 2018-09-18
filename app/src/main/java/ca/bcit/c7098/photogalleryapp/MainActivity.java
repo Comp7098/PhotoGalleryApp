@@ -16,6 +16,9 @@ public class MainActivity extends AppCompatActivity {
     // Request codes
     static final int REQUEST_IMAGE_CAPTURE = 1001;
 
+    // Image data string
+    public static final String KEY_IMAGE_DATA = "data";
+
     // UI Elements
     private Button buttonEdit;
     private Button buttonScrollPrev;
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Display image
-        Bitmap imageBitmap = (Bitmap) extras.get("data");
+        Bitmap imageBitmap = (Bitmap) extras.get(KEY_IMAGE_DATA);
         ImageView imageView = findViewById(R.id.image_view_main);
         imageView.setImageBitmap(imageBitmap);
     }
