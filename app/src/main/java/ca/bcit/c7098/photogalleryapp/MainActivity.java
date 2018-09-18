@@ -2,7 +2,10 @@ package ca.bcit.c7098.photogalleryapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,30 +73,34 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    Log.e("Photo Error", "Error occured while creating the file");
+                    return;
+                }
+
+                Uri photoURI = FileProvider.getUriForFile(view.getContext(),
+                        "ca.bcit.c7098.photogalleryapp",
+                        photoFile);
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check result
-        if (requestCode != REQUEST_IMAGE_CAPTURE || resultCode != RESULT_OK) {
-            Log.e("Image Capture Error", "Capture unsuccessful.");
-            return;
-        }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(DIRECTORY_PICTURES);
 
-        // Check data
-        Bundle extras = data.getExtras();
-        if (extras == null)
-        {
-            Log.e("Image Capture Error", "Unable to retrieve data from camera");
-            return;
-        }
-
-        // Display image
-        Bitmap imageBitmap = (Bitmap) extras.get("data");
-        ImageView imageView = findViewById(R.id.image_view_main);
-        imageView.setImageBitmap(imageBitmap);
+        return File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
     }
 }
