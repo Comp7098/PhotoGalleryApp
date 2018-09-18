@@ -6,13 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/image_view_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/main_display_of_images"
+        app:layout_constraintLeft_toRightOf="@id/button_scroll_prev"
+        app:layout_constraintRight_toLeftOf="@id/button_scroll_next"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_edit" />
+
+    <Button
+        android:id="@+id/button_scroll_prev"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/previous"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_search" />
+
+    <Button
+        android:id="@+id/button_scroll_next"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/button_take_picture" />
+
+    <Button
+        android:id="@+id/button_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/edit"
+        app:layout_constraintLeft_toRightOf="@id/button_scroll_prev"
+        app:layout_constraintRight_toLeftOf="@id/button_scroll_next"
+        app:layout_constraintBottom_toTopOf="@id/button_search" />
+
+    <Button
+        android:id="@+id/button_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/button_take_picture"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:id="@+id/button_take_picture"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/take_picture"
+        app:layout_constraintLeft_toRightOf="@id/button_search"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
