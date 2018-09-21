@@ -6,4 +6,5 @@
     <string name="main_display_of_images">Main Display of Images</string>
     <string name="take_picture">Take Picture</string>
     <string name="edit">Edit</string>
+    <string name="caption">Caption</string>
 </resources>
