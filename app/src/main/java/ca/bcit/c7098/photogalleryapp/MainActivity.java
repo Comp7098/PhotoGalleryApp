@@ -6,12 +6,16 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,17 +43,13 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonSearch;
     private Button buttonTakePicture;
 
-    // Image related UI elements
-    private ImageView mImageView;
-    private TextView mTimeStamp;
-    private TextView mCaption;
-    private TextView mLocation;
-
     // Path of the current image being displayed
     private String mCurrentPhotoPath;
 
     // Gallery
-    private List<String> mPhotoPaths;
+//    private List<ImageDao> mPhotoPaths;
+    private RecyclerView imageGalleryView;
+    private ImageGalleryAdapter mAdapter;
 
 
     @Override
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Create gallery
-        mPhotoPaths = new ArrayList<>();
+//        mPhotoPaths = new ArrayList<>();
 
         // Grab buttons
         buttonEdit = findViewById(R.id.button_edit);
@@ -67,11 +67,12 @@ public class MainActivity extends AppCompatActivity {
         buttonSearch = findViewById(R.id.button_search);
         buttonTakePicture = findViewById(R.id.button_take_picture);
 
-        // Grab image data
-        mImageView = findViewById(R.id.image_view_main);
-        mCaption = findViewById(R.id.caption);
-        mTimeStamp = findViewById(R.id.timestamp);
-        mLocation = findViewById(R.id.location);
+        // Create RecyclerView for viewing the image along with the caption, timestamp and location
+        imageGalleryView = findViewById(R.id.image_gallery);
+        imageGalleryView.setHasFixedSize(true);
+        imageGalleryView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mAdapter = new ImageGalleryAdapter(/*DATA SOURCE HERE*/);
+        imageGalleryView.setAdapter(mAdapter);
 
         // Assign Listeners
         buttonEdit.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // go to the next picture in the gallery
+                // something like:
+                // imageGallery.showNext();
 
             }
         });
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // go to the previous picture in the gallery
+                // imageGallery.showPrevious();
             }
         });
     }
@@ -118,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = Utilities.createImageFile(getApplicationContext());
             } catch (IOException ex) {
                 // Error occurred
                 Log.e("Image file error", "Cannot create image file");
@@ -135,40 +139,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check result
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && mCurrentPhotoPath != null) {
-            // Get the dimensions of the View
-            int targetW = mImageView.getWidth();
-            int targetH = mImageView.getHeight();
-
-            // Get the dimensions of the bitmap
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-            int photoW = bmOptions.outWidth;
-            int photoH = bmOptions.outHeight;
-
-            // Determine how much to scale down the image
-            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-            // Decode the image file into a Bitmap sized to fill the View
-            bmOptions.inJustDecodeBounds = false;
-            bmOptions.inSampleSize = scaleFactor;
-            bmOptions.inPurgeable = true;
-
-            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-            mImageView.setImageBitmap(bitmap);
+            // save the picture in the gallery
         }
     }
 
-    /**
-     * @return A full sized image file of the photo that was taken
-     */
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
-        mCurrentPhotoPath = imageFile.getAbsolutePath();
-        return imageFile;
-    }
+
+
+
 
 }

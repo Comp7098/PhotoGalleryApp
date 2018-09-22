@@ -6,22 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/image_view_main"
-        android:layout_width="208dp"
-        android:layout_height="355dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/main_display_of_images"
-        app:layout_constraintBottom_toTopOf="@id/button_edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/button_scroll_prev"
-        app:layout_constraintRight_toLeftOf="@id/button_scroll_next"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/caption"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
         android:id="@+id/button_scroll_prev"
         android:layout_width="0dp"
@@ -65,44 +49,9 @@
         app:layout_constraintLeft_toRightOf="@id/button_search"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <EditText
-        android:inputType="text"
-        android:hint="@string/caption"
-        android:id="@+id/caption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/button_scroll_prev"
-        app:layout_constraintEnd_toStartOf="@+id/location"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_view_main" />
-
-    <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/button_edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/timestamp"
-        app:layout_constraintTop_toBottomOf="@+id/image_view_main" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/image_gallery"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
 </android.support.constraint.ConstraintLayout>
