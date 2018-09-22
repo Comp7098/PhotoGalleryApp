@@ -12,8 +12,25 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+        }
+    }
+    flavorDimensions "stage"
+    productFlavors {
+        prod {
+            dimension "stage"
+            minSdkVersion 19
+        }
+        dev {
+            dimension "stage"
+            versionNameSuffix "-dev"
+            applicationIdSuffix ".dev"
+            resConfigs "en", "xxhdpi"
         }
     }
 }

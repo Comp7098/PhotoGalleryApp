@@ -3,6 +3,7 @@ package ca.bcit.c7098.photogalleryapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Path of the current image being displayed
     private String mCurrentPhotoPath;
-
     // Gallery
     private List<ImageData> mImageList;
     private RecyclerView imageGalleryView;
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         buttonTakePicture = findViewById(R.id.button_take_picture);
 
         // Create RecyclerView for viewing the image along with the caption, timestamp and location
+        mImageList = new ArrayList<>();
         imageGalleryView = findViewById(R.id.image_gallery);
         imageGalleryView.setHasFixedSize(true);
         imageGalleryView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonScrollPrev.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // go to the previous picture in the gallery
                 // imageGallery.showPrevious();
             }
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             if (photoFile != null) {
                 Uri photoUri = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                mCurrentPhotoPath = photoFile.getAbsolutePath();
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
@@ -138,8 +140,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check result
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && mCurrentPhotoPath != null) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // save the picture in the gallery
+
+            // display the image as a thumbnail
+
+
+
         }
     }
 
