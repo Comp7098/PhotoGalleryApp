@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
 
     // Gallery
-//    private List<ImageDao> mPhotoPaths;
+    private List<ImageData> mImageList;
     private RecyclerView imageGalleryView;
     private ImageGalleryAdapter mAdapter;
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         imageGalleryView = findViewById(R.id.image_gallery);
         imageGalleryView.setHasFixedSize(true);
         imageGalleryView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        mAdapter = new ImageGalleryAdapter(/*DATA SOURCE HERE*/);
+        mAdapter = new ImageGalleryAdapter(mImageList);
         imageGalleryView.setAdapter(mAdapter);
 
         // Assign Listeners

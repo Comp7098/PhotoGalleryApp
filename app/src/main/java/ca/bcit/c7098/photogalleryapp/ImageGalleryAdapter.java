@@ -11,14 +11,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
+
+    private List<ImageData> imageDataList;
+
+    ImageGalleryAdapter(List<ImageData> data) {
+        imageDataList = data;
+    }
+
     @NonNull
     @Override
     public ImageGalleryAdapter.ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.image_layout, parent, false);
-        ImageViewHolder viewHolder = new ImageViewHolder(view);
-        return viewHolder;
+        return new ImageViewHolder(view);
     }
 
     @Override
