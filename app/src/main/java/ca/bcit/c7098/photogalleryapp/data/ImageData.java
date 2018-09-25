@@ -1,4 +1,4 @@
-package ca.bcit.c7098.photogalleryapp;
+package ca.bcit.c7098.photogalleryapp.data;
 
 import android.graphics.Bitmap;
 import android.media.Image;
