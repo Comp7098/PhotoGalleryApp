@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/image_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <Button
         android:id="@+id/button_scroll_prev"
         android:layout_width="0dp"
@@ -32,7 +37,7 @@
         app:layout_constraintRight_toLeftOf="@id/button_scroll_next" />
 
     <Button
-        android:id="@+id/button_search"
+        android:id="@+id/button_filter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/search"
@@ -48,10 +53,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/button_search"
         app:layout_constraintRight_toRightOf="parent" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/image_gallery"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
 
 </android.support.constraint.ConstraintLayout>
