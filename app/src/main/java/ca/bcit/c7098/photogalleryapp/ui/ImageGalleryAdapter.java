@@ -1,4 +1,4 @@
-package ca.bcit.c7098.photogalleryapp;
+package ca.bcit.c7098.photogalleryapp.ui;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ca.bcit.c7098.photogalleryapp.R;
 import ca.bcit.c7098.photogalleryapp.data.ImageData;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {

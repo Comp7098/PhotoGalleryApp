@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.bcit.c7098.photogalleryapp.BuildConfig;
-import ca.bcit.c7098.photogalleryapp.ImageGalleryAdapter;
 import ca.bcit.c7098.photogalleryapp.R;
 import ca.bcit.c7098.photogalleryapp.Utilities;
 import ca.bcit.c7098.photogalleryapp.data.ImageData;
