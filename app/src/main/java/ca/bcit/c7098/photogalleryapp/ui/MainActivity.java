@@ -1,4 +1,4 @@
-package ca.bcit.c7098.photogalleryapp;
+package ca.bcit.c7098.photogalleryapp.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +17,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.bcit.c7098.photogalleryapp.BuildConfig;
+import ca.bcit.c7098.photogalleryapp.ImageGalleryAdapter;
+import ca.bcit.c7098.photogalleryapp.R;
+import ca.bcit.c7098.photogalleryapp.Utilities;
 import ca.bcit.c7098.photogalleryapp.data.ImageData;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         buttonEdit = findViewById(R.id.button_edit);
         buttonScrollPrev = findViewById(R.id.button_scroll_prev);
         buttonScrollNext = findViewById(R.id.button_scroll_next);
-        buttonSearch = findViewById(R.id.button_search);
+        buttonSearch = findViewById(R.id.button_filter);
         buttonTakePicture = findViewById(R.id.button_take_picture);
 
         // Populate the list of images
