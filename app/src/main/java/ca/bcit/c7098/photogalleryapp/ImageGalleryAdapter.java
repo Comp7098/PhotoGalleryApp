@@ -18,6 +18,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     private List<ImageData> imageDataList;
 
     ImageGalleryAdapter(List<ImageData> data) {
+        // Get array of file URIs?
         imageDataList = data;
     }
 
@@ -31,7 +32,11 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ImageGalleryAdapter.ImageViewHolder holder, int position) {
-
+        // set what should be shown based on the position of the item
+        holder.mImageView.setImageBitmap(null);
+        holder.mCaption.setText(imageDataList.get(position).toString());
+        holder.mTimestamp.setText(imageDataList.get(position).toString());
+        holder.mLocation.setText(imageDataList.get(position).toString());
     }
 
     @Override

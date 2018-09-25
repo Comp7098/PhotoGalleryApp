@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,5 +49,9 @@ public class Utilities {
         File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
 //        mCurrentPhotoPath = imageFile.getAbsolutePath();
         return imageFile;
+    }
+
+    public static void longToast(Context context, String str) {
+        Toast.makeText(context, str, Toast.LENGTH_LONG).show();
     }
 }
