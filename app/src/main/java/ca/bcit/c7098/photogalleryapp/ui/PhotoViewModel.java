@@ -4,28 +4,30 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import ca.bcit.c7098.photogalleryapp.data.AppDatabase;
 import ca.bcit.c7098.photogalleryapp.data.Photo;
-import ca.bcit.c7098.photogalleryapp.data.PhotoDao;
+import ca.bcit.c7098.photogalleryapp.data.PhotoRepository;
 
 public class PhotoViewModel extends AndroidViewModel {
 
-    private MutableLiveData<List<Photo>> photos;
+    private LiveData<List<Photo>> data;
+    private PhotoRepository photoRepo;
 
-    public PhotoViewModel(@NonNull Application application) {
+    public PhotoViewModel(Application application) {
         super(application);
+        photoRepo = new PhotoRepository(application);
+        data = photoRepo.getAllPhotos();
     }
 
     public LiveData<List<Photo>> getAllPhotos() {
-        return null;
+        return data;
+    }
+
+    public void insert(Photo photo) {
+        photoRepo.insert(photo);
     }
 
 }

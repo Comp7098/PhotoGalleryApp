@@ -1,9 +1,12 @@
 package ca.bcit.c7098.photogalleryapp.data;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
 @Database(entities = {Photo.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -13,11 +16,34 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
-            instance = Room.databaseBuilder(context, AppDatabase.class, DB_NAME).build();
+            instance = Room.databaseBuilder(context, AppDatabase.class, DB_NAME).addCallback(startDb).build();
         }
         return instance;
     }
 
     public abstract PhotoDao photoDao();
+
+    private static RoomDatabase.Callback startDb = new RoomDatabase.Callback() {
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
+            new OpenDbAsyncTask(instance).execute();
+        }
+    };
+
+    private static class OpenDbAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private PhotoDao dao;
+
+        OpenDbAsyncTask(AppDatabase db) {
+            dao = db.photoDao();
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+          //  dao.deleteAll();
+            return null;
+        }
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package ca.bcit.c7098.photogalleryapp.data;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -31,5 +32,8 @@ public interface PhotoDao {
 
     @Delete
     void delete(Photo photo);
+
+    @Query("DELETE FROM photo")
+    void deleteAll();
 
 }

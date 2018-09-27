@@ -1,5 +1,6 @@
 package ca.bcit.c7098.photogalleryapp.ui;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -14,26 +15,27 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.bcit.c7098.photogalleryapp.R;
+import ca.bcit.c7098.photogalleryapp.Utilities;
 import ca.bcit.c7098.photogalleryapp.data.Photo;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
 
     private List<Photo> imageDataList;
+    private final LayoutInflater inflater;
 
 
-    public void setImageDataList(List<Photo> data) {
+    public void setData(List<Photo> data) {
         imageDataList = data;
         notifyDataSetChanged();
     }
 
-    ImageGalleryAdapter(List<Photo> data) {
-        imageDataList = data;
+    ImageGalleryAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
     public ImageGalleryAdapter.ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.image_layout, parent, false);
         return new ImageViewHolder(view);
     }
@@ -41,17 +43,20 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     @Override
     public void onBindViewHolder(@NonNull ImageGalleryAdapter.ImageViewHolder holder, int position) {
         // set what should be shown based on the position of the item
-        Photo current = imageDataList.get(position);
-        Bitmap bm = BitmapFactory.decodeFile(current.getPhotoPath());
-        holder.mImageView.setImageBitmap(bm);
-        holder.mCaption.setText(current.getCaption());
-        holder.mTimestamp.setText(current.getDate());
-        holder.mLocation.setText(current.getLocation());
+        if (imageDataList != null) {
+            Photo current = imageDataList.get(position);
+            // TODO: Find out where else to put this call
+            Bitmap bm = Utilities.getThumbnailFromPath(holder.mImageView, current.getPhotoPath());
+            holder.mImageView.setImageBitmap(bm);
+            holder.mCaption.setText(current.getCaption());
+            holder.mTimestamp.setText(current.getDate());
+            holder.mLocation.setText(current.getLocation());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return imageDataList.size();
+        return imageDataList != null ? imageDataList.size() : 0;
     }
 
 

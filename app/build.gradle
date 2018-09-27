@@ -40,7 +40,13 @@ android {
             resConfigs "en", "xxhdpi"
         }
     }
+
+//    tasks.withType(JavaCompile) {
+//        options.compilerArgs += ["-Xlint:depreciation"]
+//    }
 }
+
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -58,6 +64,7 @@ dependencies {
 
     def room_version = "1.1.1"
 
+    implementation "android.arch.lifecycle:extensions:$room_version"
     implementation "android.arch.lifecycle:livedata:$room_version"
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version" // use kapt for Kotlin

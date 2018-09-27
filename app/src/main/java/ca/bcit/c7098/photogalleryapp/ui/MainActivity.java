@@ -1,13 +1,11 @@
 package ca.bcit.c7098.photogalleryapp.ui;
 
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.persistence.room.Room;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.wifi.hotspot2.omadm.PpsMoParser;
-import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import android.widget.Button;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.bcit.c7098.photogalleryapp.BuildConfig;
@@ -49,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
     // Gallery
     private List<Photo> photos;
     private RecyclerView imageGalleryView;
-    private RecyclerView.Adapter mAdapter;
+    private ImageGalleryAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private AppDatabase db;
 
-    private AndroidViewModel photoViewModel;
+    private PhotoViewModel photoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +77,20 @@ public class MainActivity extends AppCompatActivity {
 
         mLayoutManager = new LinearLayoutManager(this);
         imageGalleryView.setLayoutManager(mLayoutManager);
-
-        photos = new ArrayList<>();
-        mAdapter = new ImageGalleryAdapter(photos);
+        mAdapter = new ImageGalleryAdapter(this);
         imageGalleryView.setAdapter(mAdapter);
+
+        // Get ViewModel and observe the data provider
+        photoViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
+        photoViewModel.getAllPhotos().observe(this, new Observer<List<Photo>>() {
+            @Override
+            public void onChanged(@Nullable List<Photo> photos) {
+                // update UI
+                mAdapter.setData(photos);
+            }
+        });
+
+
 
         // Assign Listeners
         buttonEdit.setOnClickListener(new View.OnClickListener() {
@@ -152,37 +159,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check result
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // Get the dimensions of the View
-//            int targetW = mImageView.getWidth();
-//            int targetH = mImageView.getHeight();
-//
-//            // Get the dimensions of the bitmap
-//            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//            bmOptions.inJustDecodeBounds = true;
-//            BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-//            int photoW = bmOptions.outWidth;
-//            int photoH = bmOptions.outHeight;
-//
-//            // Determine how much to scale down the image
-//            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-//
-//            // Decode the image file into a Bitmap sized to fill the View
-//            bmOptions.inJustDecodeBounds = false;
-//            bmOptions.inSampleSize = scaleFactor;
-//            bmOptions.inPurgeable = true;
-//
-//            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-//            mImageView.setImageBitmap(bitmap);
-
-            // save the picture on the phone
-
-            // update the gallery
-
-            // display picture as thumbnail
-
-            if (db != null) {
-               // insert the photo data into the database
-            }
+            Photo p = new Photo();
+            p.setCaption("");
+            p.setDate("");
+            p.setLocation("");
+            p.setPhotoPath(mCurrentPhotoPath);
+            photoViewModel.insert(p);
         }
     }
 }
