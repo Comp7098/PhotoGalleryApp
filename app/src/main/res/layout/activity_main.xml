@@ -4,54 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/image_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    tools:context=".ui.MainActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <Button
         android:id="@+id/button_scroll_prev"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/previous"
-        app:layout_constraintBottom_toTopOf="@id/button_search"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_gallery" />
 
     <Button
         android:id="@+id/button_scroll_next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/next"
-        app:layout_constraintBottom_toTopOf="@id/button_take_picture"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_gallery" />
 
     <Button
         android:id="@+id/button_edit"
-        android:layout_width="0dp"
+        android:layout_width="154dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/edit"
-        app:layout_constraintBottom_toTopOf="@id/button_search"
-        app:layout_constraintLeft_toRightOf="@id/button_scroll_prev"
-        app:layout_constraintRight_toLeftOf="@id/button_scroll_next" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_gallery" />
 
     <Button
         android:id="@+id/button_filter"
-        android:layout_width="0dp"
+        android:layout_width="239dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/search"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/button_take_picture" />
+        app:layout_constraintEnd_toStartOf="@+id/button_take_picture"
+        app:layout_constraintTop_toBottomOf="@+id/button_edit" />
 
     <Button
         android:id="@+id/button_take_picture"
-        android:layout_width="0dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/take_picture"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/button_search"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_edit" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/image_gallery"
+        android:layout_width="368dp"
+        android:layout_height="397dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
