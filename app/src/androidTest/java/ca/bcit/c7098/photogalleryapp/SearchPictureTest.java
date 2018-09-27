@@ -58,7 +58,17 @@ public class SearchPictureTest {
     }
 
     @Test
-    public void todayAsStartDate() {
+    public void searchByCaption() {
+
+    }
+
+    @Test
+    public void searchByLocation() {
+
+    }
+
+    @Test
+    public void searchByDate() {
         Helper.DatePickerHelper();
     }
 
