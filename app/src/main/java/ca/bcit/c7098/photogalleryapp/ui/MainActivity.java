@@ -1,7 +1,12 @@
 package ca.bcit.c7098.photogalleryapp.ui;
 
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.wifi.hotspot2.omadm.PpsMoParser;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -20,12 +25,13 @@ import java.util.List;
 import ca.bcit.c7098.photogalleryapp.BuildConfig;
 import ca.bcit.c7098.photogalleryapp.R;
 import ca.bcit.c7098.photogalleryapp.Utilities;
-import ca.bcit.c7098.photogalleryapp.data.ImageData;
+import ca.bcit.c7098.photogalleryapp.data.AppDatabase;
+import ca.bcit.c7098.photogalleryapp.data.Photo;
 
 public class MainActivity extends AppCompatActivity {
 
     // Request codes
-    static final int REQUEST_IMAGE_CAPTURE = 1001;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     // Image data string
     public static final String KEY_IMAGE_DATA = "data";
@@ -39,20 +45,23 @@ public class MainActivity extends AppCompatActivity {
 
     // Path of the current image being displayed
     private String mCurrentPhotoPath;
+
     // Gallery
-    private List<ImageData> mImageList;
+    private List<Photo> photos;
     private RecyclerView imageGalleryView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private AppDatabase db;
+
+    private AndroidViewModel photoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create gallery
-//        mPhotoPaths = new ArrayList<>();
+        // Load database
 
         // Grab buttons
         buttonEdit = findViewById(R.id.button_edit);
@@ -62,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         buttonTakePicture = findViewById(R.id.button_take_picture);
 
         // Populate the list of images
-        mImageList = new ArrayList<>();
 //        File pictureDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 //        File[] files = pictureDir.listFiles();
 
@@ -73,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         imageGalleryView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new ImageGalleryAdapter(mImageList);
+        photos = new ArrayList<>();
+        mAdapter = new ImageGalleryAdapter(photos);
         imageGalleryView.setAdapter(mAdapter);
 
         // Assign Listeners
@@ -171,12 +180,9 @@ public class MainActivity extends AppCompatActivity {
 
             // display picture as thumbnail
 
+            if (db != null) {
+               // insert the photo data into the database
+            }
         }
     }
-
-
-
-
-
-
 }

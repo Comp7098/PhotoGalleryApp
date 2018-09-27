@@ -1,5 +1,7 @@
 package ca.bcit.c7098.photogalleryapp.ui;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,14 +14,19 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.bcit.c7098.photogalleryapp.R;
-import ca.bcit.c7098.photogalleryapp.data.ImageData;
+import ca.bcit.c7098.photogalleryapp.data.Photo;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
 
-    private List<ImageData> imageDataList;
+    private List<Photo> imageDataList;
 
-    ImageGalleryAdapter(List<ImageData> data) {
-        // Get array of file URIs?
+
+    public void setImageDataList(List<Photo> data) {
+        imageDataList = data;
+        notifyDataSetChanged();
+    }
+
+    ImageGalleryAdapter(List<Photo> data) {
         imageDataList = data;
     }
 
@@ -34,16 +41,19 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     @Override
     public void onBindViewHolder(@NonNull ImageGalleryAdapter.ImageViewHolder holder, int position) {
         // set what should be shown based on the position of the item
-        holder.mImageView.setImageBitmap(null);
-        holder.mCaption.setText(imageDataList.get(position).toString());
-        holder.mTimestamp.setText(imageDataList.get(position).toString());
-        holder.mLocation.setText(imageDataList.get(position).toString());
+        Photo current = imageDataList.get(position);
+        Bitmap bm = BitmapFactory.decodeFile(current.getPhotoPath());
+        holder.mImageView.setImageBitmap(bm);
+        holder.mCaption.setText(current.getCaption());
+        holder.mTimestamp.setText(current.getDate());
+        holder.mLocation.setText(current.getLocation());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return imageDataList.size();
     }
+
 
     /**
      * Holds the data that will be displayed in the image view

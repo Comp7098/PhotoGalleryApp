@@ -58,6 +58,11 @@ public class SearchPictureTest {
     }
 
     @Test
+    public void endDate_opensDatePicker() {
+        onView(withId(R.id.end_date)).perform(click());
+    }
+
+    @Test
     public void searchByCaption() {
 
     }
