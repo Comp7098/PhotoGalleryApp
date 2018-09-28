@@ -27,7 +27,7 @@ public interface PhotoDao {
     @Insert
     void insert(Photo photo);
 
-    @Update
+    @Update(onConflict = REPLACE)
     void update(Photo photo);
 
     @Delete

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +40,7 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
     @Override
     public PhotoGalleryAdapter.ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.image_layout, parent, false);
-        return new ImageViewHolder(view);
+        return new ImageViewHolder(view, new CaptionTextWatcher());
     }
 
     @Override
@@ -47,13 +49,13 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
         Log.d("PhotoGalleryAdapter", "onBindViewHolder called");
         if (imageDataList != null) {
             Photo current = imageDataList.get(position);
-            // TODO: Find out where else to put this call because it makes the RecyclerView laggy
-            //Bitmap bm = Utilities.getThumbnailFromPath(holder.mImageView, current.getPhotoPath());
-            //holder.mImageView.setImageBitmap(bm);
+
             Glide.with(holder.itemView).load(current.getPhotoPath()).into(holder.mImageView);
-            holder.mCaption.setText(current.getCaption());
             holder.mTimestamp.setText(current.getDate());
             holder.mLocation.setText(current.getLocation());
+
+            holder.watcher.setPosition(position);
+            holder.mCaption.setText(current.getCaption());
         }
     }
 
@@ -74,13 +76,44 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
         private TextView mTimestamp;
         private TextView mLocation;
         private View layout;
-        ImageViewHolder(View view) {
+
+        private CaptionTextWatcher watcher;
+
+        ImageViewHolder(View view, CaptionTextWatcher watcher) {
             super(view);
             layout = view;
             mImageView = view.findViewById(R.id.image_view_main);
             mCaption = view.findViewById(R.id.caption);
             mTimestamp = view.findViewById(R.id.timestamp);
             mLocation = view.findViewById(R.id.location);
+
+            this.watcher = watcher;
+            mCaption.addTextChangedListener(watcher);
+        }
+    }
+
+    /**
+     * Listener for when a photo's caption is edited
+     */
+    private class CaptionTextWatcher implements TextWatcher {
+        private int position;
+
+        public void setPosition(int position) {
+            this.position = position;
+        }
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            imageDataList.get(position).setCaption(s.toString());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     }
 }

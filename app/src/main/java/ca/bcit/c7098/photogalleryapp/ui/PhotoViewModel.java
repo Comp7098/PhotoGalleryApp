@@ -30,4 +30,8 @@ public class PhotoViewModel extends AndroidViewModel {
         photoRepo.insert(photo);
     }
 
+    public void update(Photo photo) {
+        photoRepo.update(photo);
+    }
+
 }

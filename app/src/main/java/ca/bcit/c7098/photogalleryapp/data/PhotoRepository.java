@@ -3,6 +3,7 @@ package ca.bcit.c7098.photogalleryapp.data;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.persistence.room.Update;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -32,6 +33,22 @@ public class PhotoRepository {
         new InsertAsyncTask(photoDao).execute(photo);
     }
 
+    public void update(Photo photo) {
+        new UpdateAsyncTask(photoDao).execute(photo);
+    }
+
+    private static class UpdateAsyncTask extends AsyncTask<Photo, Void, Void> {
+        private PhotoDao photoDao;
+
+        UpdateAsyncTask(PhotoDao dao) {
+            photoDao = dao;
+        }
+        @Override
+        protected Void doInBackground(Photo... photos) {
+            photoDao.update(photos[0]);
+            return null;
+        }
+    }
     private static class InsertAsyncTask extends AsyncTask<Photo, Void, Void> {
 
         private PhotoDao asyncTaskDao;
