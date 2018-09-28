@@ -1,4 +1,4 @@
-package ca.bcit.c7098.photogalleryapp;
+package ca.bcit.c7098.photogalleryapp.common;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -40,22 +40,22 @@ public class Utilities {
     }
 
     public static Bitmap getThumbnailFromPath(ImageView imageView, final String path) {
-//        int targetW = imageView.getWidth();
-//        int targetH = imageView.getHeight();
+        int targetW = imageView.getMaxWidth();
+        int targetH = imageView.getMaxHeight();
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, bmOptions);
-//        int photoW = bmOptions.outWidth;
-//        int photoH = bmOptions.outHeight;
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = 1;
+        bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
         return BitmapFactory.decodeFile(path, bmOptions);

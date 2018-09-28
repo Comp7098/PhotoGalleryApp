@@ -1,8 +1,9 @@
-package ca.bcit.c7098.photogalleryapp;
+package ca.bcit.c7098.photogalleryapp.acceptanceTests;
 
 import android.app.DatePickerDialog;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 
+import ca.bcit.c7098.photogalleryapp.R;
 import ca.bcit.c7098.photogalleryapp.ui.MainActivity;
 import ca.bcit.c7098.photogalleryapp.ui.SearchActivity;
 
@@ -45,7 +47,7 @@ public class SearchPictureTest {
 
     @Test
     public void searchPictureButton_opensSearchActivity() {
-        onView(withId(R.id.button_filter)).perform(click());
+        onView(ViewMatchers.withId(R.id.button_filter)).perform(click());
         //Intents.init();
         intended(hasComponent(SearchActivity.class.getName()));
     }

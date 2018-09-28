@@ -10,14 +10,10 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +21,7 @@ import java.util.List;
 
 import ca.bcit.c7098.photogalleryapp.BuildConfig;
 import ca.bcit.c7098.photogalleryapp.R;
-import ca.bcit.c7098.photogalleryapp.Utilities;
+import ca.bcit.c7098.photogalleryapp.common.Utilities;
 import ca.bcit.c7098.photogalleryapp.data.AppDatabase;
 import ca.bcit.c7098.photogalleryapp.data.Photo;
 
@@ -39,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     // UI Elements
     private Button buttonEdit;
+    // TODO: Remove next & previous butons because they don't make sense any more.
     private Button buttonScrollPrev;
     private Button buttonScrollNext;
     private Button buttonSearch;
@@ -49,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Gallery
     private List<Photo> photos;
-    private RecyclerView imageGalleryView;
-    private ImageGalleryAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private PhotoGalleryAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private AppDatabase db;
@@ -73,21 +70,17 @@ public class MainActivity extends AppCompatActivity {
         buttonSearch = findViewById(R.id.button_filter);
         buttonTakePicture = findViewById(R.id.button_take_picture);
 
-        // Populate the list of images
-//        File pictureDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        File[] files = pictureDir.listFiles();
+        recyclerView = findViewById(R.id.image_gallery);
+        recyclerView.setHasFixedSize(true);
 
-
-        imageGalleryView = findViewById(R.id.image_gallery);
-        imageGalleryView.setHasFixedSize(true);
 
         //TODO: Fix RecyclerView scrolling extremely slowly
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        imageGalleryView.setLayoutManager(mLayoutManager);
-        mAdapter = new ImageGalleryAdapter(this);
-        imageGalleryView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new PhotoGalleryAdapter(this);
+        recyclerView.setAdapter(mAdapter);
 
-        imageGalleryView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -101,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
        // LinearSnapHelper snapHelper = new LinearSnapHelper();
-      //  snapHelper.attachToRecyclerView(imageGalleryView);
+      //  snapHelper.attachToRecyclerView(recyclerView);
 
 
         // Get ViewModel and observe the data provider

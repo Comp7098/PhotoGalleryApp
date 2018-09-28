@@ -1,4 +1,4 @@
-package ca.bcit.c7098.photogalleryapp;
+package ca.bcit.c7098.photogalleryapp.acceptanceTests;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -17,11 +17,11 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AssignCaptionTest {
+public class UploadPictureTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void assignCaptionTest() {
+    public void uploadPictureTest() {
     }
 }

@@ -1,4 +1,4 @@
-package ca.bcit.c7098.photogalleryapp;
+package ca.bcit.c7098.photogalleryapp.acceptanceTests;
 
 
 import android.app.Activity;
@@ -25,6 +25,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ca.bcit.c7098.photogalleryapp.R;
 import ca.bcit.c7098.photogalleryapp.ui.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
