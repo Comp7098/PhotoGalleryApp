@@ -23,7 +23,6 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     private List<Photo> imageDataList;
     private final LayoutInflater inflater;
 
-
     public void setData(List<Photo> data) {
         imageDataList = data;
         notifyDataSetChanged();
@@ -44,8 +43,10 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     public void onBindViewHolder(@NonNull ImageGalleryAdapter.ImageViewHolder holder, int position) {
         // set what should be shown based on the position of the item
         if (imageDataList != null) {
-            Photo current = imageDataList.get(position);
+            int i = position;
+            Photo current = imageDataList.get(i);
             // TODO: Find out where else to put this call
+
             Bitmap bm = Utilities.getThumbnailFromPath(holder.mImageView, current.getPhotoPath());
             holder.mImageView.setImageBitmap(bm);
             holder.mCaption.setText(current.getCaption());

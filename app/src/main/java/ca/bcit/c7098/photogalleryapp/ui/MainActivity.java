@@ -10,10 +10,14 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
     private PhotoViewModel photoViewModel;
 
+    private int lastVisibleItemPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,17 +81,36 @@ public class MainActivity extends AppCompatActivity {
         imageGalleryView = findViewById(R.id.image_gallery);
         imageGalleryView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        //TODO: Fix RecyclerView scrolling extremely slowly
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         imageGalleryView.setLayoutManager(mLayoutManager);
         mAdapter = new ImageGalleryAdapter(this);
         imageGalleryView.setAdapter(mAdapter);
+
+        imageGalleryView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.d("recyclerview", "current state: " + newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d("recyclerview", "moved by x = " + dx + ", y = " + dy);
+            }
+        });
+       // LinearSnapHelper snapHelper = new LinearSnapHelper();
+      //  snapHelper.attachToRecyclerView(imageGalleryView);
+
 
         // Get ViewModel and observe the data provider
         photoViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
         photoViewModel.getAllPhotos().observe(this, new Observer<List<Photo>>() {
             @Override
             public void onChanged(@Nullable List<Photo> photos) {
-                // update UI
+                //TODO: Only storing one item at a time for some reason
+                Log.d("recyclerview","Item count: " + mAdapter.getItemCount());
                 mAdapter.setData(photos);
             }
         });
@@ -122,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 // go to the next picture in the gallery
                 // something like:
                 // imageGallery.showNext();
+                mAdapter.notifyItemChanged(1);
 
             }
         });
