@@ -24,7 +24,7 @@ public interface PhotoDao {
     @Query("SELECT * FROM photo WHERE photo.caption LIKE :caption")
     Photo searchByCaption(String caption);
 
-    @Insert(onConflict = REPLACE)
+    @Insert
     void insert(Photo photo);
 
     @Update

@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Photo.class}, version = 1)
+@Database(entities = {Photo.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "app-db";
 
@@ -16,7 +16,10 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
-            instance = Room.databaseBuilder(context, AppDatabase.class, DB_NAME).addCallback(startDb).build();
+            instance = Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
+                    .addCallback(startDb)
+                    .fallbackToDestructiveMigration()
+                    .build();
         }
         return instance;
     }

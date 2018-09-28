@@ -13,7 +13,7 @@ public class Photo {
         this.uid = uid;
     }
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int uid;
 
     private String photoPath;
