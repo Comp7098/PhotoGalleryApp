@@ -37,6 +37,12 @@ public class PhotoRepository {
         new UpdateAsyncTask(photoDao).execute(photo);
     }
 
+    public void updateAll() {
+        List<Photo> list = allPhotos.getValue();
+        if (list != null)
+            new UpdateAsyncTask(photoDao).execute(list.toArray(new Photo[0]));
+    }
+
     private static class UpdateAsyncTask extends AsyncTask<Photo, Void, Void> {
         private PhotoDao photoDao;
 
@@ -45,7 +51,7 @@ public class PhotoRepository {
         }
         @Override
         protected Void doInBackground(Photo... photos) {
-            photoDao.update(photos[0]);
+            photoDao.update(photos);
             return null;
         }
     }

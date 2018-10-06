@@ -3,6 +3,10 @@ package ca.bcit.c7098.photogalleryapp.data;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.bumptech.glide.util.Util;
+
+import ca.bcit.c7098.photogalleryapp.common.Utilities;
+
 @Entity
 public class Photo {
     public int getUid() {
@@ -20,7 +24,24 @@ public class Photo {
 
     private String date;
 
-    private String location;
+    public double getLatitude() {
+        return Utilities.round(latitude, 0);
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Utilities.round(longitude, 0);
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    private double latitude;
+    private double longitude;
 
     private String caption;
 
@@ -39,14 +60,6 @@ public class Photo {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getCaption() {

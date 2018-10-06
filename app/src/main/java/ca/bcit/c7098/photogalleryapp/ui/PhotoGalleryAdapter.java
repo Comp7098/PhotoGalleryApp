@@ -49,11 +49,9 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
         Log.d("PhotoGalleryAdapter", "onBindViewHolder called");
         if (imageDataList != null) {
             Photo current = imageDataList.get(position);
-
             Glide.with(holder.itemView).load(current.getPhotoPath()).into(holder.mImageView);
             holder.mTimestamp.setText(current.getDate());
-            holder.mLocation.setText(current.getLocation());
-
+            holder.mLocation.setText(current.getLatitude() + ", " + current.getLongitude());
             holder.watcher.setPosition(position);
             holder.mCaption.setText(current.getCaption());
         }
@@ -108,6 +106,7 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            Log.d("image gallery", "Text at " + position + " changed to " + s.toString());
             imageDataList.get(position).setCaption(s.toString());
         }
 

@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -27,5 +30,11 @@ public class Utilities {
 
     public static void longToast(Context context, String str) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+    }
+
+    public static double round(double d, int places) {
+        BigDecimal bd = new BigDecimal(d);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

@@ -45,6 +45,7 @@ import ca.bcit.c7098.photogalleryapp.R;
 import ca.bcit.c7098.photogalleryapp.common.Utilities;
 import ca.bcit.c7098.photogalleryapp.data.AppDatabase;
 import ca.bcit.c7098.photogalleryapp.data.Photo;
+import ca.bcit.c7098.photogalleryapp.data.PhotoRepository;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Path of the current image being displayed
     private String mCurrentPhotoPath;
-    private String mLocation;
+    private double mLatitude;
+    private double mLongitude;
 
     // Gallery
     private List<Photo> photos;
@@ -100,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.image_gallery);
         recyclerView.setHasFixedSize(true);
 
-
-        //TODO: Fix RecyclerView scrolling extremely slowly
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new PhotoGalleryAdapter(this);
@@ -215,6 +215,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (photoViewModel != null)
+            photoViewModel.updateAll();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (photoViewModel != null) {
+            photoViewModel.updateAll();
+        }
+        super.onBackPressed();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
+        }
+    }
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check result
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -238,16 +259,18 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
-                            mLocation = Double.toString(task.getResult().getLatitude());
+                            mLatitude = task.getResult().getLatitude();
+                            mLongitude = task.getResult().getLongitude();
                         }
                     }
                 });
             }
 
             Photo p = new Photo();
-            p.setCaption("");
+          //  p.setCaption("");
             p.setDate(timestamp);
-            p.setLocation(mLocation);
+            p.setLatitude(mLatitude);
+            p.setLongitude(mLongitude);
             p.setPhotoPath(mCurrentPhotoPath);
             photoViewModel.insert(p);
         }

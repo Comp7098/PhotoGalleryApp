@@ -7,6 +7,7 @@ import ca.bcit.c7098.photogalleryapp.R;
 
 public class SearchActivity extends AppCompatActivity {
 
+    // TODO: Write tests for photo searching
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

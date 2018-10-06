@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Photo.class}, version = 2)
+@Database(entities = {Photo.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "app-db";
 
