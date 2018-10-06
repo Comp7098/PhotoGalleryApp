@@ -45,8 +45,11 @@ public class SearchPictureTest {
 //        Intents.init();
 //    }
 
+
     @Test
     public void searchPictureButton_opensSearchActivity() {
+        // Given that I am at the main screen of the photo gallery app
+        // When I press the filter button
         onView(ViewMatchers.withId(R.id.button_filter)).perform(click());
         //Intents.init();
         intended(hasComponent(SearchActivity.class.getName()));
@@ -66,12 +69,25 @@ public class SearchPictureTest {
 
     @Test
     public void searchByCaption() {
+        // Given I am at the Search screen of the app
+        // And I see an editable text view labeled "Keywords"
+        // When I type "My test caption" into the editable view
+        // And I press the button labeled "Search"
+        // Then I see the main screen of the app
+        // And I see the pictures with the caption "My test caption"
 
     }
 
     @Test
     public void searchByLocation() {
-
+        // Given I am at the Search screen of the app
+        // And I see the field labeled Top left corner of the search area
+        // And I see the field labeled Bottom right corner of the search area
+        // When I enter the current location in the Top Left corner of the search area
+        // And I enter the current location in the Bottom right corner of the search area
+        // And I press the button labeled "Search"
+        // Then I see the main screen of the app
+        // And I see the pictures that were taken at the current location
     }
 
     @Test
