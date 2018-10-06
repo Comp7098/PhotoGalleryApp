@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationProvider;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -17,6 +16,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -24,17 +24,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Permission;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -45,7 +40,6 @@ import ca.bcit.c7098.photogalleryapp.R;
 import ca.bcit.c7098.photogalleryapp.common.Utilities;
 import ca.bcit.c7098.photogalleryapp.data.AppDatabase;
 import ca.bcit.c7098.photogalleryapp.data.Photo;
-import ca.bcit.c7098.photogalleryapp.data.PhotoRepository;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -120,8 +114,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("recyclerview", "moved by x = " + dx + ", y = " + dy);
             }
         });
-       // LinearSnapHelper snapHelper = new LinearSnapHelper();
-      //  snapHelper.attachToRecyclerView(recyclerView);
+
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+
 
 
         // Get ViewModel and observe the data provider
@@ -268,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
             Photo p = new Photo();
           //  p.setCaption("");
-            p.setDate(timestamp);
+            p.setDate(new Date());
             p.setLatitude(mLatitude);
             p.setLongitude(mLongitude);
             p.setPhotoPath(mCurrentPhotoPath);

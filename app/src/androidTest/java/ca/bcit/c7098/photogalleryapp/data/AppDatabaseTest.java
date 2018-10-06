@@ -1,5 +1,6 @@
 package ca.bcit.c7098.photogalleryapp.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -9,6 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.List;
 
 import ca.bcit.c7098.photogalleryapp.TestUtils;
 
@@ -62,4 +66,14 @@ public class AppDatabaseTest {
 
     // End update tests
 
+    // Searching
+    @Test
+    public void searchByDate_returnsCorrectResult() {
+        Calendar c = Calendar.getInstance();
+        Date start = new Date(c.getTimeInMillis());
+        c.add(Calendar.MONTH, 1);
+        Date end = new Date(c.getTimeInMillis());
+        LiveData<List<Photo>> photosByDate = photoDao.getPhotosBetweenDates(start, end);
+
+    }
 }

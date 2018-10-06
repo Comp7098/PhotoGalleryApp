@@ -3,7 +3,7 @@ package ca.bcit.c7098.photogalleryapp.data;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.bumptech.glide.util.Util;
+import java.util.Date;
 
 import ca.bcit.c7098.photogalleryapp.common.Utilities;
 
@@ -22,7 +22,7 @@ public class Photo {
 
     private String photoPath;
 
-    private String date;
+    private Date date;
 
     public double getLatitude() {
         return Utilities.round(latitude, 0);
@@ -54,11 +54,11 @@ public class Photo {
     }
 
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

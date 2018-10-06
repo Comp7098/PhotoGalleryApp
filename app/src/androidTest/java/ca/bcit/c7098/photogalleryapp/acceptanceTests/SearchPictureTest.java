@@ -2,10 +2,12 @@ package ca.bcit.c7098.photogalleryapp.acceptanceTests;
 
 import android.app.DatePickerDialog;
 import android.support.test.espresso.contrib.PickerActions;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.widget.EditText;
 
 import org.hamcrest.Matchers;
 import org.junit.Rule;
@@ -20,12 +22,19 @@ import ca.bcit.c7098.photogalleryapp.ui.SearchActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
+import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -71,9 +80,14 @@ public class SearchPictureTest {
     public void searchByCaption() {
         // Given I am at the Search screen of the app
         // And I see an editable text view labeled "Keywords"
+        String caption = "My test caption";
+        onView(withHint("Keywords")).check(matches(isDisplayed()));
         // When I type "My test caption" into the editable view
+        onView(withHint("Keywords")).perform(typeText(caption));
         // And I press the button labeled "Search"
+        onView(withText("Search")).perform(click());
         // Then I see the main screen of the app
+        intended(hasComponent(MainActivity.class.getName()));
         // And I see the pictures with the caption "My test caption"
 
     }

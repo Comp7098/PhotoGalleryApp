@@ -20,6 +20,7 @@ import java.util.List;
 
 import ca.bcit.c7098.photogalleryapp.R;
 import ca.bcit.c7098.photogalleryapp.common.Utilities;
+import ca.bcit.c7098.photogalleryapp.data.Converters;
 import ca.bcit.c7098.photogalleryapp.data.Photo;
 
 public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapter.ImageViewHolder> {
@@ -50,7 +51,7 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
         if (imageDataList != null) {
             Photo current = imageDataList.get(position);
             Glide.with(holder.itemView).load(current.getPhotoPath()).into(holder.mImageView);
-            holder.mTimestamp.setText(current.getDate());
+            holder.mTimestamp.setText(Converters.fromDate(current.getDate()));
             holder.mLocation.setText(current.getLatitude() + ", " + current.getLongitude());
             holder.watcher.setPosition(position);
             holder.mCaption.setText(current.getCaption());
