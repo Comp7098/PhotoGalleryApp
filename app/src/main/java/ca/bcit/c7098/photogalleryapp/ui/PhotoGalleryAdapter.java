@@ -11,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.bcit.c7098.photogalleryapp.R;
@@ -23,9 +26,10 @@ import ca.bcit.c7098.photogalleryapp.common.Utilities;
 import ca.bcit.c7098.photogalleryapp.data.Converters;
 import ca.bcit.c7098.photogalleryapp.data.Photo;
 
-public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapter.ImageViewHolder> {
+public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapter.ImageViewHolder> implements Filterable {
 
     private List<Photo> imageDataList;
+    private List<Photo> filteredList;
     private final LayoutInflater inflater;
 
     public void setData(List<Photo> data) {
@@ -63,6 +67,50 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
     @Override
     public int getItemCount() {
         return imageDataList != null ? imageDataList.size() : 0;
+    }
+
+    @Override
+    public Filter getFilter() {
+        // TODO: Get rid of this since we don't need it
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                filter(constraint);
+                return new FilterResults();
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                if (results.values == null) {
+                    Log.e("adapter", "Filter results were null");
+                    return;
+                }
+                imageDataList = (List<Photo>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public void filterByDate(long start, long end) {
+        filteredList = new ArrayList<>();
+        for (Photo p : imageDataList) {
+            if (p.getDate().compareTo(Converters.fromTimestamp(start)) > 0 && p.getDate().compareTo(Converters.fromTimestamp(end)) < 0) {
+                filteredList.add(p);
+            }
+        }
+        imageDataList = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public void filterByKeyword(String keyword) {
+        filteredList = new ArrayList<>();
+        for (Photo p : imageDataList) {
+            if (p.getCaption().equals(keyword)) {
+                filteredList.add(p);
+            }
+        }
+        imageDataList = filteredList;
+        notifyDataSetChanged();
     }
 
 

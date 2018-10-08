@@ -8,15 +8,24 @@ import android.app.DatePickerDialog;
 import java.text.SimpleDateFormat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.bumptech.glide.util.Util;
+
 import ca.bcit.c7098.photogalleryapp.R;
+import ca.bcit.c7098.photogalleryapp.common.Utilities;
 
 public class SearchActivity extends AppCompatActivity {
+
+    static final String START_DATE = "START_DATE";
+    static final String END_DATE = "END_DATE";
+    static final String KEYWORD = "KEYWORD";
 
     // TODO: Write tests for photo searching
     @Override
@@ -24,18 +33,44 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        EditText start = findViewById(R.id.start_date);
-        DateListener startDateListener = new DateListener(start, this.getApplicationContext());
-        EditText end = findViewById(R.id.end_date);
-        DateListener endDateListener = new DateListener(end, this.getApplicationContext());
+        final EditText start = findViewById(R.id.start_date);
+        final DateListener startDateListener = new DateListener(start);
+        final EditText end = findViewById(R.id.end_date);
+        final DateListener endDateListener = new DateListener(end);
+
+        final EditText keyword = findViewById(R.id.keyword);
+
+        Button searchButton = findViewById(R.id.button_search);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Utilities.isEditTextEmpty(start) && !Utilities.isEditTextEmpty(end)) {
+                    Intent output = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putLong(START_DATE, startDateListener.getDateInMillis());
+                    bundle.putLong(END_DATE, endDateListener.getDateInMillis());
+                    output.putExtras(bundle);
+                    setResult(RESULT_OK, output);
+                    finish();
+                }
+                else if (!Utilities.isEditTextEmpty(keyword)) {
+                    Intent output = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(KEYWORD, keyword.getText().toString());
+                    output.putExtras(bundle);
+                    setResult(RESULT_OK, output);
+                    finish();
+                }
+            }
+        });
     }
 
     private class DateListener implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
         private EditText mEditText;
-        private Context mContext;
-        DateListener(EditText editText, Context context) {
+        private long mDateInMillis;
+        DateListener(EditText editText) {
             mEditText = editText;
-            mContext = context;
             mEditText.setOnClickListener(this);
         }
         @Override
@@ -51,8 +86,13 @@ public class SearchActivity extends AppCompatActivity {
             c.set(year, month, dayOfMonth);
             Date date = new Date();
             date.setTime(c.getTimeInMillis());
+            mDateInMillis = c.getTimeInMillis();
             String string = new SimpleDateFormat("EEE, MMM d yyyy", Locale.CANADA).format(date);
             mEditText.setText(string);
+        }
+
+        public long getDateInMillis() {
+            return mDateInMillis;
         }
     }
 }

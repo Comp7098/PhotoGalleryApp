@@ -89,7 +89,7 @@ public class SearchPictureTest {
         // Then I see the main screen of the app
         intended(hasComponent(MainActivity.class.getName()));
         // And I see the pictures with the caption "My test caption"
-
+        onView(withId(R.id.image_gallery)).perform(RecyclerViewActions.scrollTo(withText(caption)));
     }
 
     @Test

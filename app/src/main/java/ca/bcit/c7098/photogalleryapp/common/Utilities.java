@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,5 +37,9 @@ public class Utilities {
         BigDecimal bd = new BigDecimal(d);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    public static boolean isEditTextEmpty(EditText e) {
+        return e.getText().toString().isEmpty();
     }
 }

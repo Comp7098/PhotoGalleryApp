@@ -24,6 +24,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_LOCATION = 1;
     // Request codes
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_SEARCH = 2;
 
     // Image data string
     public static final String KEY_IMAGE_DATA = "data";
@@ -119,17 +123,15 @@ public class MainActivity extends AppCompatActivity {
         snapHelper.attachToRecyclerView(recyclerView);
 
 
-
         // Get ViewModel and observe the data provider
         photoViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
         photoViewModel.getAllPhotos().observe(this, new Observer<List<Photo>>() {
             @Override
             public void onChanged(@Nullable List<Photo> photos) {
-                Log.d("recyclerview","Item count: " + mAdapter.getItemCount());
+                Log.d("recyclerview", "Item count: " + mAdapter.getItemCount());
                 mAdapter.setData(photos);
             }
         });
-
 
 
         // Assign Listeners
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), SearchActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_SEARCH);
             }
         });
 
@@ -176,7 +178,35 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
+
+        if (locationEnabled) {
+            final LocationCallback callback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    super.onLocationResult(locationResult);
+                }
+            };
+            final LocationRequest request = new LocationRequest();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
+
+            } else {
+                mFusedLocationClient.requestLocationUpdates(request, callback, null);
+                final Task<Location> locationResult = mFusedLocationClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            mLatitude = task.getResult().getLatitude();
+                            mLongitude = task.getResult().getLongitude();
+                        }
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -185,6 +215,27 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSION_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     locationEnabled = true;
+                    // mFusedLocationClient.requestLocationUpdates(request, callback, null);
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    final Task<Location> locationResult = mFusedLocationClient.getLastLocation();
+                    locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            if (task.isSuccessful()) {
+                                mLatitude = task.getResult().getLatitude();
+                                mLongitude = task.getResult().getLongitude();
+                            }
+                        }
+                    });
                 }
             }
         }
@@ -213,8 +264,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (photoViewModel != null)
+        if (photoViewModel != null) {
             photoViewModel.updateAll();
+        }
     }
 
     @Override
@@ -239,27 +291,6 @@ public class MainActivity extends AppCompatActivity {
             String timestamp = new SimpleDateFormat("EEE, MMM d yyyy", Locale.CANADA).format(new Date());
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
-            } else {
-//                LocationCallback callback = new LocationCallback() {
-//                    @Override
-//                    public void onLocationResult(LocationResult locationResult) {
-//                        super.onLocationResult(locationResult);
-//
-//                    }
-//                };
-//                LocationRequest request = new LocationRequest();
-//                mFusedLocationClient.requestLocationUpdates(request, callback, null);
-//                mFusedLocationClient.getLastLocation().addOnSuccessListener(this, listener);
-                Task<Location> locationResult = mFusedLocationClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            mLatitude = task.getResult().getLatitude();
-                            mLongitude = task.getResult().getLongitude();
-                        }
-                    }
-                });
             }
 
             Photo p = new Photo();
@@ -269,6 +300,30 @@ public class MainActivity extends AppCompatActivity {
             p.setLongitude(mLongitude);
             p.setPhotoPath(mCurrentPhotoPath);
             photoViewModel.insert(p);
+        } else if (requestCode == REQUEST_SEARCH && resultCode == RESULT_OK && data != null) {
+            // Have received search parameters from the Search activity
+            Bundle result = data.getExtras();
+            if (result != null) {
+                // Search by date
+                long defaultValue = -1;
+                long start = result.getLong(SearchActivity.START_DATE, defaultValue);
+                long end = result.getLong(SearchActivity.END_DATE, defaultValue);
+                if (start != defaultValue && end != defaultValue) {
+                    mAdapter.filterByDate(start, end);
+                    return;
+                }
+
+                // Search by keyword
+                String strDefault = "";
+                String keyword = result.getString(SearchActivity.KEYWORD, strDefault);
+                if (!keyword.equals(strDefault)) {
+                    mAdapter.filterByKeyword(keyword);
+                    return;
+                }
+
+                // Search by location
+
+            }
         }
     }
 
