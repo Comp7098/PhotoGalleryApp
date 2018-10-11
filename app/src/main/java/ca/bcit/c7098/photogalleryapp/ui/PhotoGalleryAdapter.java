@@ -91,6 +91,16 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
         notifyDataSetChanged();
     }
 
+    public void filterByLocation(double latitude, double longitude) {
+        filteredList = new ArrayList<>();
+        for (Photo p : imageDataList) {
+            if (p.getLatitude() > latitude && p.getLongitude() > longitude) {
+                filteredList.add(p);
+            }
+        }
+        imageDataList = filteredList;
+        notifyDataSetChanged();
+    }
 
     /**
      * Holds the data that will be displayed in the image view

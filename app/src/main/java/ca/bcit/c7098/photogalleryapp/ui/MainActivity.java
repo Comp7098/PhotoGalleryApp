@@ -283,10 +283,15 @@ public class MainActivity extends AppCompatActivity {
                 String keyword = result.getString(SearchActivity.KEYWORD, strDefault);
                 if (!keyword.equals(strDefault)) {
                     mAdapter.filterByKeyword(keyword);
-                    return;
+                } else {
+
+                    // Search by location
+                    double def = 0;
+                    double lat = Double.parseDouble(result.getString(SearchActivity.TOP_LEFT, strDefault));
+                    double lng = Double.parseDouble(result.getString(SearchActivity.BOTTOM_RIGHT, strDefault));
+                    mAdapter.filterByLocation(lat, lng);
                 }
 
-                // Search by location
 
             }
         }

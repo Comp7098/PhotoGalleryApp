@@ -24,10 +24,11 @@ import ca.bcit.c7098.photogalleryapp.common.Utilities;
 public class SearchActivity extends AppCompatActivity {
 
     public static final String START_DATE = "START_DATE";
+    public static final String TOP_LEFT = "TOP_LEFT";
+    public static final String BOTTOM_RIGHT = "BOTTOM_RIGHT";
     public static final String END_DATE = "END_DATE";
     public static final String KEYWORD = "KEYWORD";
 
-    // TODO: Write tests for photo searching
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,8 @@ public class SearchActivity extends AppCompatActivity {
         final DateListener endDateListener = new DateListener(end);
 
         final EditText keyword = findViewById(R.id.keyword);
+        final EditText topLeft = findViewById(R.id.top_left);
+        final EditText bottomRight = findViewById(R.id.bottom_right);
 
         Button searchButton = findViewById(R.id.button_search);
 
@@ -58,6 +61,14 @@ public class SearchActivity extends AppCompatActivity {
                     Intent output = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putString(KEYWORD, keyword.getText().toString());
+                    output.putExtras(bundle);
+                    setResult(RESULT_OK, output);
+                    finish();
+                } else if (!Utilities.isEditTextEmpty(topLeft) && !Utilities.isEditTextEmpty(bottomRight)) {
+                    Intent output = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(TOP_LEFT, topLeft.getText().toString());
+                    bundle.putString(BOTTOM_RIGHT, bottomRight.getText().toString());
                     output.putExtras(bundle);
                     setResult(RESULT_OK, output);
                     finish();
