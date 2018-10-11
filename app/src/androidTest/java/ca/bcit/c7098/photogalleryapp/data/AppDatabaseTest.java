@@ -37,10 +37,7 @@ public class AppDatabaseTest {
 
     @After
     public void tearDown() throws Exception {
-    }
-
-    @After
-    public void closeDb() throws IOException {
+        db.clearAllTables();
         db.close();
     }
 
