@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                     locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                         @Override
                         public void onComplete(@NonNull Task<Location> task) {
-                            if (task.isSuccessful()) {
+                            if (task.isSuccessful() && task.getResult() != null) {
                                 mLatitude = task.getResult().getLatitude();
                                 mLongitude = task.getResult().getLongitude();
                             }
