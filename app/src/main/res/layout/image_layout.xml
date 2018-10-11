@@ -12,7 +12,8 @@
         app:cardElevation="3dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
-        app:contentPadding="3dp">
+        app:contentPadding="3dp"
+        android:focusableInTouchMode="true">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

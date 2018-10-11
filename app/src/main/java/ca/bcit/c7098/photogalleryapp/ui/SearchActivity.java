@@ -23,9 +23,9 @@ import ca.bcit.c7098.photogalleryapp.common.Utilities;
 
 public class SearchActivity extends AppCompatActivity {
 
-    static final String START_DATE = "START_DATE";
-    static final String END_DATE = "END_DATE";
-    static final String KEYWORD = "KEYWORD";
+    public static final String START_DATE = "START_DATE";
+    public static final String END_DATE = "END_DATE";
+    public static final String KEYWORD = "KEYWORD";
 
     // TODO: Write tests for photo searching
     @Override

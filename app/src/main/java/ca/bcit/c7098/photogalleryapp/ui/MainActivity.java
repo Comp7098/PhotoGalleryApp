@@ -55,13 +55,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_IMAGE_DATA = "data";
 
     // UI Elements
-    private Button buttonEdit;
-    // TODO: Remove next & previous butons because they don't make sense any more.
-    private Button buttonScrollPrev;
-    private Button buttonScrollNext;
     private Button buttonSearch;
     private Button buttonTakePicture;
-    private EditText editCaption;
 
     // Path of the current image being displayed
     private String mCurrentPhotoPath;
@@ -89,13 +84,8 @@ public class MainActivity extends AppCompatActivity {
         // Load database
 
         // Grab buttons
-        buttonEdit = findViewById(R.id.button_edit);
-        buttonScrollPrev = findViewById(R.id.button_scroll_prev);
-        buttonScrollNext = findViewById(R.id.button_scroll_next);
         buttonSearch = findViewById(R.id.button_filter);
         buttonTakePicture = findViewById(R.id.button_take_picture);
-
-        editCaption = findViewById(R.id.caption);
 
         recyclerView = findViewById(R.id.image_gallery);
         recyclerView.setHasFixedSize(true);
@@ -105,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new PhotoGalleryAdapter(this);
         recyclerView.setAdapter(mAdapter);
 
+        // TODO: Fix RecyclerView not scaling properly when the screen rotates
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -134,15 +125,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // Assign Listeners
-        buttonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), EditActivity.class);
-                startActivity(intent);
-            }
-        });
-
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,24 +140,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonScrollNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // go to the next picture in the gallery
-                // something like:
-                // imageGallery.showNext();
-                mAdapter.notifyItemChanged(1);
 
-            }
-        });
-
-        buttonScrollPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // go to the previous picture in the gallery
-                // imageGallery.showPrevious();
-            }
-        });
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);

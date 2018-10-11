@@ -26,7 +26,7 @@ import ca.bcit.c7098.photogalleryapp.common.Utilities;
 import ca.bcit.c7098.photogalleryapp.data.Converters;
 import ca.bcit.c7098.photogalleryapp.data.Photo;
 
-public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapter.ImageViewHolder> implements Filterable {
+public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapter.ImageViewHolder> {
 
     private List<Photo> imageDataList;
     private List<Photo> filteredList;
@@ -67,28 +67,6 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapte
     @Override
     public int getItemCount() {
         return imageDataList != null ? imageDataList.size() : 0;
-    }
-
-    @Override
-    public Filter getFilter() {
-        // TODO: Get rid of this since we don't need it
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                filter(constraint);
-                return new FilterResults();
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results.values == null) {
-                    Log.e("adapter", "Filter results were null");
-                    return;
-                }
-                imageDataList = (List<Photo>) results.values;
-                notifyDataSetChanged();
-            }
-        };
     }
 
     public void filterByDate(long start, long end) {
